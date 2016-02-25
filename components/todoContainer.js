@@ -1,44 +1,29 @@
 import React, { Component, PropTypes } from 'react';
 import TodoList from './todoList';
 import TodoInput from './todoInput'
-// import {connect} from ''
-export default class TodoContainer extends Component {
-  getData(){
-      return [{
-        text: 'todo1',
-        complete: false
-      },{
-        text: 'todo2',
-        complete: false
-      },{
-        text: 'todo3',
-        complete: true
-      }]
-  }
+import { connect } from 'react-redux'
+import { addTodo, completeTodo } from '../action'
 
-  componentWillMount() {
-    this.setState({data: this.getData()})
-  }
-
-  handleToggle(index){
-    var newState = Object.assign({}, this.state)
-    newState.data[index].complete = !newState.data[index].complete
-   this.setState(newState)
-  }
-
-  addTodo(newText){
-    this.setState({data: [...this.state.data, {text: newText, complete: false}]})
-  }
+class TodoContainer extends Component {
 
   render() {
+    const {dispatch, datas} = this.props
     return (
       <div>
-        <TodoInput addTodo={(newText) => this.addTodo(newText)}/>
-        <TodoList items={this.state.data} handleToggle={(index) => this.handleToggle(index)}/>
+        <TodoInput addTodo={(newText) => dispatch(addTodo(newText))}/>
+        <TodoList items={datas} handleToggle={(index) => dispatch(completeTodo(index))}/>
       </div>
     )
   }
 }
+
+function mapStateToProps(state){
+  return{
+      datas: state
+  }
+}
+
+export default connect(mapStateToProps)(TodoContainer)
 
 // TodoList.propTypes = {
 //   todos: PropTypes.arrayOf(PropTypes.shape({
