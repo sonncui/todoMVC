@@ -6,14 +6,9 @@ export function todos(state = [], action){
     case ADD_TODO:
       return [...state, {text: action.newText, complete: false}]
     case COMPLETE_TODO:
-      return [
-        ...state.slice(0, action.index),
-        Object.assign({}, state[action.index], {
-          text: state[action.index].text,
-          complete: !state[action.index].complete
-        }),
-        ...state.slice(action.index + 1)
-      ]
+      return state.map((item, index) =>
+        index === action.index ? {text: item.text, complete: !item.complete} : item
+    )
     default:
       return state
   }

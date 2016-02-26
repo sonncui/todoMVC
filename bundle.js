@@ -75,7 +75,6 @@
 	  complete: true
 	}]);
 
-	console.log("state", store.getState());
 	(0, _reactDom.render)(_react2.default.createElement(
 	  _reactRedux.Provider,
 	  { store: store },
@@ -21654,10 +21653,9 @@
 	    case _action.ADD_TODO:
 	      return [].concat(_toConsumableArray(state), [{ text: action.newText, complete: false }]);
 	    case _action.COMPLETE_TODO:
-	      return [].concat(_toConsumableArray(state.slice(0, action.index)), [Object.assign({}, state[action.index], {
-	        text: state[action.index].text,
-	        complete: !state[action.index].complete
-	      })], _toConsumableArray(state.slice(action.index + 1)));
+	      return state.map(function (item, index) {
+	        return index === action.index ? { text: item.text, complete: !item.complete } : item;
+	      });
 	    default:
 	      return state;
 	  }
